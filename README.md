@@ -29,7 +29,7 @@ https://packaging.python.org/tutorials/packaging-projects/
 
 <br>
 
-# GitActions: publicar pacotes no PyPi
+## Git Actions: publicar pacotes no PyPi
 
 <br>
 
@@ -104,3 +104,17 @@ Num primeiro momento, achei que o arquivo era imprescindível e depois, lendo, d
 
 - [Why You Should Use EditorConfig to Standardize Code Styles](https://www.freecodecamp.org/news/how-to-use-editorconfig-to-standardize-code-styles/)
 - [EditorConfig](https://editorconfig.org/)
+
+<br>
+
+## Estudar
+
+<br>
+
+### Version
+
+<br>
+
+Add version in traquitanas.__version__
+
+- [**StackOverflow**: Creating a  __version __ attribute for python packages without getting into trouble](https://stackoverflow.com/questions/17791481/creating-a-version-attribute-for-python-packages-without-getting-into-troubl)
