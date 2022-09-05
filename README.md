@@ -1,53 +1,82 @@
-## Build
+# Arrebol
 
 <br>
 
-Instalar o build
+Pacote criado com a finalidade única de testar como subir um pacote para o PyPi e Conda.
+
+- https://github.com/traquitanas/arrebol
+- https://anaconda.org/michelmetran/arrebol
+- https://pypi.org/project/arrebol/
+
+<br>
+
+---
+
+### _Build Manually_
+
+Inicialmente é necessário instalar o [conda-build](https://docs.conda.io/projects/conda-build/en/latest/index.html) com o comando:
 
 ```bash
-python3 -m pip install build
-python3 -m pip install --upgrade build
+conda activate pablocarreira-py39
+conda install conda-build
 ```
 
 <br>
 
-Builda o package localmente
+Uma vez instalado, é possível buildar com o comando abaixo:
 
 ```bash
-python3 -m build
+conda-build ./conda/
 ```
 
 <br>
 
-Instala o *build* localmente
+---
 
+### GitActions
+
+Há um [GitAction](https://github.com/fcakyon/conda-publish-action) para publicar pacotes no Conda. A vantagem é que ele converte o _build_ para outras plataformas (adicionar converters)!
+
+Já tentei outros, porém abandonei por falhas:
+
+- elbeejay/conda-publish-action@v1.5
+- maxibor/conda-package-publish-action@v1.1
+
+<br>
+
+```bash
+# Convert Package to Other Platforms
+cd ~
+platforms=( osx-64 linux-32 linux-64 win-32 win-64 )
+find $HOME/conda-bld/linux-64/ -name *.tar.bz2 | while read file
+do
+    echo $file
+    #conda convert --platform all $file  -o $HOME/conda-bld/
+    for platform in "${platforms[@]}"
+    do
+       conda convert --platform $platform $file  -o $HOME/conda-bld/
+    done
+done
 ```
-!pip install dist/traquitanas*.tar.gz  
-```
-
-https://packaging.python.org/tutorials/packaging-projects/
 
 <br>
 
-## Git Actions: publicar pacotes no PyPi
+---
 
-<br>
+### Referências
 
-Publicar versões de distribuição de pacotes usando fluxos de trabalho de CI / CD de ações do GitHub. Ver mais [aqui](https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/).
+- [Conda-Build: Conda channels](https://docs.conda.io/projects/conda-build/en/latest/concepts/channels.html)
+- [Medium: Publishing Your Python Package on conda and conda-forge](https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf)
+- [YouTube: Building and Distributing Python Software with Conda](https://www.youtube.com/watch?v=HSK-6dCnYVQ)
+- [Medium: Building a conda package and uploading it to Anaconda Cloud](https://giswqs.medium.com/building-a-conda-package-and-uploading-it-to-anaconda-cloud-6a3abd1c5c52) Não gostei pois é preciso etapas manuais
 
-**IMPORTANTE**: Adicionar as credenciais do PyPi, da versão test e versão estável, como um Secrets do GitHub, sob os nomes PYPI_API_TOKEN e TEST_PYPI_API_TOKEN.
+**GitActions**
 
-<br>
+- https://github.com/maxibor/conda-package-publish-action
+- https://github.com/rfun/tethysapp-servicetest/blob/master/.github/workflows/main.yml
+- [YouTube: Gerenciando pacotes e ambientes com Poetry - Live de Python #179 ](https://www.youtube.com/watch?v=ZOSWdktsKf0&t=2680s)
 
-----
-
-## *Tags*
-
-Note que a função tem uma condição: o pacote só é publicado quando há uma tag de versão no *commit*. Isso condicionante pode ser suprimida ou empregada. É preciso entender os conceitos de [tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) em *commits* e como fazer isso usando o [PyCharm](https://www.jetbrains.com/help/pycharm/use-tags-to-mark-specific-commits.html#tag_commit) ou outra IDE
-
-<br>
-
-----
+---
 
 ## Arquivos
 
@@ -61,60 +90,4 @@ Note que a função tem uma condição: o pacote só é publicado quando há uma
 
 Pelo que li e entendi, é necessário esse arquivo quando não existe arquivo setup.py.
 
-[**SetupTools**: setup.cfg-only projects](
-https://setuptools.readthedocs.io/en/latest/setuptools.html#setup-cfg-only-projects)
-
-<br>
-
-### MANIFEST.in
-
-O arquivo MANIFEST.in define quais arquivos precisam estar no *build*. Para maiores informações [clicar aqui](https://packaging.python.org/guides/using-manifest-in/)
-
-<br>
-
-### .editorconfig
-
-Meu amigo tunisiano sugeriu eu acrescentar um arquivo ```.editorconfig``` na raiz do meu projeto. O conteúdo do arquivo era como apresentado abaixo:
-
-```bash
-# EditorConfig is awesome: https://EditorConfig.org
-root = true
-
-[*]
-charset = utf-8
-indent_size = 2
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
-end_of_line = crlf
-
-[*.py]
-indent_size = 4
-max_line_length = 119
-
-```
-
-<br>
-
-Num primeiro momento, achei que o arquivo era imprescindível e depois, lendo, descobri que não, porém é adotado como boa prática, visando manter a configuração.
-
-<br>
-
-**Referências**
-
-- [Why You Should Use EditorConfig to Standardize Code Styles](https://www.freecodecamp.org/news/how-to-use-editorconfig-to-standardize-code-styles/)
-- [EditorConfig](https://editorconfig.org/)
-
-<br>
-
-## Estudar
-
-<br>
-
-### Version
-
-<br>
-
-Add version in traquitanas.__version__
-
-- [**StackOverflow**: Creating a  __version __ attribute for python packages without getting into trouble](https://stackoverflow.com/questions/17791481/creating-a-version-attribute-for-python-packages-without-getting-into-troubl)
+[**SetupTools**: setup.cfg-only projects](https://setuptools.readthedocs.io/en/latest/setuptools.html#setup-cfg-only-projects)
